@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'jacoco'
 	id 'org.springframework.boot' version '3.1.9'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
@@ -10,8 +11,6 @@ version = '0.0.1-SNAPSHOT'
 java {
 	sourceCompatibility = '17'
 }
-
-apply plugin: 'jacoco'
 
 configurations {
 	compileOnly {
@@ -39,6 +38,10 @@ test {
 	useJUnitPlatform()
 }
 
+jacoco {
+	toolVersion '0.8.10'
+}
+
 tasks.withType(Test) {
 	jacoco.includeNoLocationClasses = true
 	jacoco.excludes = ['jdk.internal.*']
@@ -57,8 +60,11 @@ tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
 	def excludes = [
 			'**/*Test*.*',
 			'**/actions/*.*',
+			'**/core/*.*',
 			'**/markers/*.*',
+			'**/services/**/*.*',
 			'**/toolwindow/*.*',
+			'**/utils/*.*'
 	]
 
 	def javaClasses = fileTree(dir: "${buildDir}/classes/java/main", excludes: excludes)
