@@ -41,7 +41,6 @@ test {
 
 tasks.withType(Test) {
 	jacoco.includeNoLocationClasses = true
-	jacoco.excludes = ['jdk.internal.*']
 }
 
 tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
@@ -54,7 +53,17 @@ tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
 		xml.required.set(true)
 	}
 
-	def javaClasses = fileTree(dir: "${buildDir}/classes/java/main")
+	def excludes = [
+			'**/*Test*.*',
+			'**/actions/*.*',
+			'**/core/*.*',
+			'**/markers/*.*',
+			'**/services/**/*.*',
+			'**/toolwindow/*.*',
+			'**/utils/*.*'
+	]
+
+	def javaClasses = fileTree(dir: "${buildDir}/classes/java/main", excludes: excludes)
 	classDirectories.from = files([javaClasses])
 
 	sourceDirectories.from = files([
