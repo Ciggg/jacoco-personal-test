@@ -31,6 +31,9 @@ jobs:
           name: report.xml
           path: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
 
+      - name: Check Directory
+        run: ls ${{ github.workspace }}/build/reports/jacoco --recursive
+
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.3
