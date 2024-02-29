@@ -23,6 +23,12 @@ jobs:
           chmod +x gradlew
           ./gradlew testCoverage
 
+      - name: Upload Report
+        uses: 'actions/upload-artifact@v2'
+        with:
+          name: report.xml
+          path: ${{ github.workspace }}/build/reports/jacoco/testCoverage/testCoverage.xml
+
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
@@ -33,3 +39,8 @@ jobs:
           min-coverage-overall: 30
           min-coverage-changed-files: 60
           debug-mode: true
+
+      - name: Get the Coverage info
+        run: |
+          echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
+          echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
