@@ -33,4 +33,10 @@ class UtilsTest {
         int actual = utils.modulo(6,3);
         Assertions.assertEquals(0, actual);
     }
+    @Test
+    public void testMultiply() {
+        final Utils utils = new Utils();
+        int actual = utils.multiply(6,3);
+        Assertions.assertEquals(18, actual);
+    }
 }
