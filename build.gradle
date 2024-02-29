@@ -57,17 +57,7 @@ tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
 		xml.required.set(true)
 	}
 
-	def excludes = [
-			'**/*Test*.*',
-			'**/actions/*.*',
-			'**/core/*.*',
-			'**/markers/*.*',
-			'**/services/**/*.*',
-			'**/toolwindow/*.*',
-			'**/utils/*.*'
-	]
-
-	def javaClasses = fileTree(dir: "${buildDir}/classes/java/main", excludes: excludes)
+	def javaClasses = fileTree(dir: "${buildDir}/classes/java/main")
 	classDirectories.from = files([javaClasses])
 
 	sourceDirectories.from = files([
