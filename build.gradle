@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'jacoco'
 	id 'org.springframework.boot' version '3.1.9'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
@@ -33,6 +34,42 @@ tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion '0.8.10'
+}
+
+tasks.withType(Test) {
+	jacoco.includeNoLocationClasses = true
+	jacoco.excludes = ['jdk.internal.*']
+}
+
+tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
+
+	group = "Reporting"
+	description = "Generate Jacoco coverage reports for the test build."
+
+	reports {
+		html.required.set(true)
+		xml.required.set(true)
+	}
+
+	def excludes = [
+			'**/core/*.*',
+			'**/markers/*.*',
+			'**/services/**/*.*',
+			'**/toolwindow/*.*',
+	]
+
+	def javaClasses = fileTree(dir: "${buildDir}/classes/java/main", excludes: excludes)
+	classDirectories.from = files([javaClasses])
+
+	sourceDirectories.from = files([
+			"$project.projectDir/src/main/java",
+	])
+
+	executionData.from = files("${project.buildDir}/jacoco/test.exec")
 }

@@ -26,4 +26,23 @@ class UtilsTest {
         int actual = utils.square(3);
         Assertions.assertEquals(9, actual);
     }
+
+    @Test
+    public void testModulo() {
+        final Utils utils = new Utils();
+        int actual = utils.modulo(6,3);
+        Assertions.assertEquals(0, actual);
+    }
+    @Test
+    public void testMultiply() {
+        final Utils utils = new Utils();
+        int actual = utils.multiply(6,3);
+        Assertions.assertEquals(18, actual);
+    }
+//    @Test
+//    public void testCube() {
+//        final Utils utils = new Utils();
+//        int actual = utils.cube(2);
+//        Assertions.assertEquals(8, actual);
+//    }
 }
