@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'jacoco'
 	id 'org.springframework.boot' version '3.1.9'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
@@ -16,8 +17,6 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-
-apply plugin: 'jacoco'
 
 repositories {
 	mavenCentral()
@@ -39,8 +38,13 @@ test {
 	useJUnitPlatform()
 }
 
+jacoco {
+	toolVersion '0.8.0'
+}
+
 tasks.withType(Test) {
 	jacoco.includeNoLocationClasses = true
+	jacoco.excludes = ['jdk.internal.*']
 }
 
 tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
